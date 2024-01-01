@@ -16,7 +16,7 @@ jobs:
             architecture: x64
 
         - name: Checkout
-          uses: actions/checkout@master
+          uses: actions/checkout@v4
 
         - name: Install flake8
           run: pip install flake8
@@ -27,3 +27,16 @@ jobs:
             checkName: 'Check-Style-Lint-flake8'
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    Check-Makrdown-Files:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Markdown Lint changelog file
+        uses: avto-dev/markdown-lint@v1
+        with:
+          rules: '/lint/rules/changelog.js'
+          config: '/lint/config/changelog.yml'
+          args: './CHANGELOG.md'
