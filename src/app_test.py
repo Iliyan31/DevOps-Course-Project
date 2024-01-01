@@ -64,4 +64,4 @@ class TestPoker(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(__name__, argv=['main'], exit=False)
