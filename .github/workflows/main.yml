@@ -8,7 +8,7 @@ on:
 
 jobs:
   Build-And-Publish-Docker-Image:
-    name: Publish the docker image
+    name: Build and Publish the docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,6 +24,16 @@ jobs:
 
       - name: Build docker image
         run: docker build -t devopscourseproject ./src
+
+      - id: version
+        uses: battila7/get-version-action@v2
+      - name: Add Semantic Version tag to Docker Image
+        uses: shrink/actions-docker-registry-tag@v3
+        with:
+          registry: ghcr.io
+          repository: '${{ github.repository }}'
+          target: 'sha-${{ github.sha }}'
+          tags: '${{ steps.version.outputs.version }}'
 
       - name: Add tag to docker image
         run: docker tag devopscourseproject ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
