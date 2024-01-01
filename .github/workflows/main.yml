@@ -64,3 +64,13 @@ jobs:
 
       - name: Run editorconfig-checker
         run: editorconfig-checker
+
+
+    Check-Python-Style:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python Style Checker
+        uses: andymckay/pycodestyle-action@0.1.3
