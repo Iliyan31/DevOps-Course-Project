@@ -1,4 +1,5 @@
 import unittest
+import pyspelling
 
 from src.app import Card, Deck, Player, Game, Belot, Poker
 
