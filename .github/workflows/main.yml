@@ -39,10 +39,16 @@ jobs:
     name: Bandit Vulnerability Checker
     runs-on: ubuntu-latest
     steps:
-      - name: Bandit Checker
-        uses: shundor/bandit-action@v1
-        with: 
-          path: "."
-          level: high
-          confidence: high
-          exit_zero: true  
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Bandit Report
+        uses: libertyy/py3-bandit-check@v2
+        
+      - name: Save Bandit txt Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{ RUNNER.temp }}/_github_home/bandit_report.out 
