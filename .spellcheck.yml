@@ -2,16 +2,16 @@ matrix:
   - name: Markdown
     aspell:
       lang: en
-      
+
     pipeline:
-      - pyspelling.filters.markdown:
-      - pyspelling.filters.html:
+    - pyspelling.filters.markdown:
+    - pyspelling.filters.html:
         comments: false
         ignores:
           - code
           - pre
     
     sources:
-      - "**/*.md"
+    - "**/*.md"
     
     default_encoding: utf-8
