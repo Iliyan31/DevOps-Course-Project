@@ -5,17 +5,31 @@ on:
       - '**'
 
 jobs:
-  Sonarcloud-Code-Scan:
-    name: SonarCloud scan
+  Snyk-Code-Scan:
+    name: Snyk can for vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Run snyk scan
+        working-directory: ${{github.workspace}}/src
+        run: |
+            npm install snyk -g
+            snyk auth ${{ secrets.SNYK_TOKEN }}
+            snyk test
+
+  # Sonarcloud-Code-Scan:
+  #   name: SonarCloud scan
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
