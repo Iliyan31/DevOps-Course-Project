@@ -90,7 +90,7 @@ jobs:
         with:
           source_files: '**/*.md'
           task_name: Markdown
- 
+
 
     Build-And-Publish-Docker-Image:
       name: Build & push docker image
