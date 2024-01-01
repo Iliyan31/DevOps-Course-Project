@@ -19,3 +19,10 @@ matrix:
     - "**/*.md"
 
     default_encoding: utf-8
+
+  - name: Python Source
+    aspell:
+      lang: en
+
+    sources:
+    - "**/*.py"
