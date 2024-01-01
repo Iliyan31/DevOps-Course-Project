@@ -86,5 +86,5 @@ jobs:
       - name: SpellCheck
         uses: rojopolis/spellcheck-github-actions@0.11.0
         with:
-          source_files: 'website/docs/*.md'
+          source_files: '**/*.md'
           task_name: Markdown
