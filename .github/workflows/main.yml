@@ -79,9 +79,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Contrast Authenticate
-        run: contrast auth
-
       - name: Contrast SCA Action
         uses: Contrast-Security-OSS/contrast-sca-action@v1
         with:
