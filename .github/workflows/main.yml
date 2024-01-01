@@ -43,4 +43,4 @@ jobs:
         uses: jpetrucciani/bandit-check@main
         with:
           path: '.'
-          bandit_flags: '-lll -o output.json -f json' 
+          # bandit_flags: '-lll -o output.json -f json' 
