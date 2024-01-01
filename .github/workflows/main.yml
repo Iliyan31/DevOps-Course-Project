@@ -1,5 +1,90 @@
 name: DevOps Course Project main workflow
 on:
   push:
-    branches: 
+    branches:
       - '**'
+
+jobs:
+
+    Check-Style-Lint-flake8:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Setup Python
+          uses: actions/setup-python@v1
+          with:
+            python-version: '3.10'
+            architecture: x64
+
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Install flake8
+          run: pip install flake8
+
+        - name: Run flake8
+          uses: suo/flake8-github-action@releases/v1
+          with:
+            checkName: 'Check-Style-Lint-flake8'
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    Check-Makrdown-Files:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Markdown Lint changelog file
+        uses: avto-dev/markdown-lint@v1
+        with:
+          rules: '/lint/rules/changelog.js'
+          config: '/lint/config/changelog.yml'
+          args: './CHANGELOG.md'
+
+
+    Check-Links-In-Markdown-Files:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check link in markdown files
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+
+
+    Check-Editorconfig:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run editorconfig-checker
+        uses: editorconfig-checker/action-editorconfig-checker@main
+
+      - name: Run editorconfig-checker
+        run: editorconfig-checker
+
+
+    Check-Python-Style:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python Style Checker
+        uses: andymckay/pycodestyle-action@0.1.3
+
+
+    Spellcheck:
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: SpellCheck
+        uses: rojopolis/spellcheck-github-actions@0.11.0
+        with:
+          source_files: '**/*.md'
+          task_name: Markdown

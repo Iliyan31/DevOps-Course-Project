@@ -51,10 +51,10 @@ class Game:
     players = []
     deck = []
 
-    def __init__(self, number_of_players, dealing_direction, dealing_instructions):
+    def __init__(self, number_of_players, deal_direction, deal_instructions):
         self.number_of_players = number_of_players
-        self.dealing_direction = dealing_direction
-        self.dealing_instructions = dealing_instructions
+        self.deal_direction = deal_direction
+        self.deal_instructions = deal_instructions
         self.deck = Deck()
         self.players = [Player() for _ in range(self.number_of_players)]
 
@@ -69,12 +69,12 @@ class Game:
         self.deck.cut()
 
     def deal(self, first_player):
-        if self.dealing_direction == 'rtl':
+        if self.deal_direction == 'rtl':
             self.players.reverse()
         index = self.players.index(first_player)
         self.players = self.players[index:] + self.players[:index]
 
-        for instruction in self.dealing_instructions:
+        for instruction in self.deal_instructions:
             for player in self.players:
                 player.players_cards.extend(self.deck.deck[:instruction])
                 self.deck.deck = self.deck.deck[instruction:]

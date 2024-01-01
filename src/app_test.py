@@ -52,7 +52,7 @@ class TestBelot(unittest.TestCase):
         """Sanity test for the Belot class."""
         belot = Belot()
         self.assertIsInstance(belot, Game)
-        
+
 
 class TestPoker(unittest.TestCase):
     """Test the Poker class."""
