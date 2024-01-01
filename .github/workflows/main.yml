@@ -34,3 +34,16 @@ jobs:
         with:
           spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
           spectral-args: scan --ok
+
+  Bandit-SAST-Checker:
+    name: Bandit Vulnerability Checker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bandit Checker
+        uses: mdegis/bandit-action@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: "."
+          level: high
+          confidence: high
+          exit_zero: true
