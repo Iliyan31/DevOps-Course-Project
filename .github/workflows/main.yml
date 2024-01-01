@@ -21,7 +21,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   SpectralOps-Vulnerability-Scan:
-    name: Spectral ubuntu CI
+    name: Spectral Code Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
