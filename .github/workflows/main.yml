@@ -72,18 +72,17 @@ jobs:
         uses: bearer/bearer-action@v2
 
 
-  semgrep-full:
+  Semgrep-Code-Scan:
+    name: Semgrep Code Scanner
     runs-on: ubuntu-latest
     container:
       image: returntocorp/semgrep
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-        # step 2
       - name: full scan
         run: |
           semgrep \
