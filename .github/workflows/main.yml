@@ -39,16 +39,14 @@ jobs:
     name: Bandit Vulnerability Checker
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      uses: jpetrucciani/bandit-check@main
 
-      - name: Run Bandit Report
-        uses: libertyy/py3-bandit-check@v2
-        
-      - name: Save Bandit txt Report
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          path: ${{ RUNNER.temp }}/_github_home/bandit_report.out 
+      # specify a path
+      uses: jpetrucciani/bandit-check@main
+      with:
+        path: '.'
+
+      # provide some flags
+      uses: jpetrucciani/bandit-check@main
+      with:
+        bandit_flags: '-lll -o output.json -f json' 
