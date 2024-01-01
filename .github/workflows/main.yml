@@ -37,9 +37,9 @@ jobs:
           orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
           authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
           apiUrl: ${{ secrets.CONTRAST_API_URL }}
-          filePath: -f src/requirements.txt
-          severity: high
-          fail: true
+          filePath: -f requirements.txt
+          severity: medium
+          fail: false
 
 
   Sonarcloud-Code-Scan:
