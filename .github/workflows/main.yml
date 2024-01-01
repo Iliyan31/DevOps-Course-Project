@@ -90,7 +90,7 @@ jobs:
           task_name: Markdown
 
       - name: SpellCheck for Python Source
-          uses: rojopolis/spellcheck-github-actions@0.11.0
-          with:
-            source_files: '**/*.py'
-            task_name: Python Source
+        uses: rojopolis/spellcheck-github-actions@0.11.0
+        with:
+          source_files: '**/*.py'
+          task_name: Python Source
