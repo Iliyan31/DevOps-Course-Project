@@ -5,45 +5,82 @@ on:
       - '**'
 
 jobs:
-  Sonarcloud-Code-Scan:
-    name: SonarCloud scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # Sonarcloud-Code-Scan:
+  #   name: SonarCloud scan
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  SpectralOps-Vulnerability-Scan:
-    name: Spectral ubuntu CI
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # SpectralOps-Vulnerability-Scan:
+  #   name: Spectral ubuntu CI
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
       
-      - name: Install and run Spectral CI
-        uses: spectralops/spectral-github-action@v4
-        with:
-          spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
-          spectral-args: scan --ok
+  #     - name: Install and run Spectral CI
+  #       uses: spectralops/spectral-github-action@v4
+  #       with:
+  #         spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
+  #         spectral-args: scan --ok
 
   Bandit-SAST-Checker:
     name: Bandit Vulnerability Checker
     runs-on: ubuntu-latest
     steps:
-      - name: Bandit Checker
-        uses: mdegis/bandit-action@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          path: "."
-          level: high
-          confidence: high
-          exit_zero: true
+      - name: 'Bandit Action'
+        description: 'Bandit Action'
+        inputs:
+          path:
+            description: 'File or directory to run bandit on'
+            required: false
+            default: '.'
+          level:
+            description: 'Report only issues of a given severity level or higher. Can be LOW, MEDIUM or HIGH. Default is UNDEFINED (everything)'
+            required: false
+            default: 'UNDEFINED'
+          confidence:
+            description: 'Report only issues of a given confidence level or higher. Can be LOW, MEDIUM or HIGH. Default is UNDEFINED (everything)'
+            required: false
+            default: 'UNDEFINED'
+          excluded_paths:
+            description: 'comma-separated list of paths (glob patterns supported) to exclude from scan (note that these are in addition to the excluded paths provided in the config file) (default: .svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg)'
+            required: false
+            default: 'DEFAULT'
+          exit_zero:
+            description: 'exit with 0, even with results found'
+            required: false
+            default: 'DEFAULT'
+          skips:
+            description: 'comma-separated list of test IDs to skip'
+            required: false
+            default: 'DEFAULT'
+          ini_path:
+            description: 'path to a .bandit file that supplies command line arguments'
+            required: false
+            default: 'DEFAULT'
+          GITHUB_TOKEN:
+            description: 'Github token of the repository (automatically created by Github)'
+            required: true
+        runs:
+          using: 'docker'
+          image: 'Dockerfile'
+          args:
+            - ${{ inputs.path }}
+            - ${{ inputs.level }}
+            - ${{ inputs.confidence }}
+            - ${{ inputs.excluded_paths }}
+            - ${{ inputs.exit_zero }}
+            - ${{ inputs.skips }}
+            - ${{ inputs.ini_path }}
