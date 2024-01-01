@@ -3,6 +3,10 @@ matrix:
     aspell:
       lang: en
 
+    dictionary:
+      wordlists:
+      - .wordlist.txt
+
     pipeline:
     - pyspelling.filters.markdown:
     - pyspelling.filters.html:
