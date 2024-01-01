@@ -1,4 +1,5 @@
 name: DevOps Course Project main workflow
 on:
   push:
-    branches: *
+    branches: 
+      - '**'
