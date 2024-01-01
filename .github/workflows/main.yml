@@ -39,7 +39,7 @@ jobs:
           apiUrl: ${{ secrets.CONTRAST_API_URL }}
           filePath: -f requirements.txt
           severity: medium
-          fail: false
+          fail: true
 
 
   Sonarcloud-Code-Scan:
