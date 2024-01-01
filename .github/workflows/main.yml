@@ -5,6 +5,43 @@ on:
       - '**'
 
 jobs:
+  Snyk-Code-Scan:
+    name: Snyk can for vulnerabilities
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run snyk scan
+        working-directory: ${{github.workspace}}/src
+        run: |
+            npm install snyk -g
+            snyk auth ${{ secrets.SNYK_TOKEN }}
+            snyk test
+
+
+  Check-Dependency-Vulnerabilities:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Contrast SCA Action
+        uses: Contrast-Security-OSS/contrast-sca-action@v1
+        with:
+          apiKey: ${{ secrets.CONTRAST_API_KEY }}
+          orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
+          authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
+          apiUrl: ${{ secrets.CONTRAST_API_URL }}
+          filePath: src/requirements.txt
+          severity: high
+          fail: true
+
+
   Sonarcloud-Code-Scan:
     name: SonarCloud scan
     runs-on: ubuntu-latest
@@ -19,6 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 
   SpectralOps-Vulnerability-Scan:
     name: Spectral Code Scan
@@ -35,6 +73,7 @@ jobs:
           spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
           spectral-args: scan --ok
 
+
   Bandit-SAST-Checker:
     name: Bandit Vulnerability Checker
     runs-on: ubuntu-latest
@@ -43,6 +82,7 @@ jobs:
         uses: jpetrucciani/bandit-check@main
         with:
           path: '.'
+
 
   Git-Leaks-Scan:
     name: Git leaks scan
@@ -71,7 +111,28 @@ jobs:
       - name: Bearer code scan
         uses: bearer/bearer-action@v2
 
-  Check-Dependency-Vulnerabilities:
+
+  Semgrep-Code-Scan:
+    name: Semgrep Code Scanner
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: full scan
+        run: |
+          semgrep \
+            --sarif --output report.sarif \
+            --metrics=off \
+            --config="p/default"
+
+
+  Trivy-Scan-And-Build:
+    name: Trivy scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -79,13 +140,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Contrast SCA Action
-        uses: Contrast-Security-OSS/contrast-sca-action@v1
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@master
         with:
-          apiKey: ${{ secrets.CONTRAST_API_KEY }}
-          orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
-          authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
-          apiUrl: ${{ secrets.CONTRAST_API_URL }}
-          filePath: src
-          severity: high
-          fail: true
+          scan-type: 'fs'
+          scan-ref: '.'
+          trivy-config: trivy.yaml
