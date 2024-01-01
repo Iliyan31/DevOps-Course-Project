@@ -39,14 +39,12 @@ jobs:
     name: Bandit Vulnerability Checker
     runs-on: ubuntu-latest
     steps:
-      uses: jpetrucciani/bandit-check@main
-
       # specify a path
-      uses: jpetrucciani/bandit-check@main
-      with:
-        path: '.'
+      - uses: jpetrucciani/bandit-check@main
+        with:
+          path: '.'
 
       # provide some flags
-      uses: jpetrucciani/bandit-check@main
-      with:
-        bandit_flags: '-lll -o output.json -f json' 
+      - uses: jpetrucciani/bandit-check@main
+        with:
+          bandit_flags: '-lll -o output.json -f json' 
