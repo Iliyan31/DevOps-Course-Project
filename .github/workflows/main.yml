@@ -9,8 +9,10 @@ jobs:
     name: Snyk can for vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Run snyk scan
         working-directory: ${{github.workspace}}/src
@@ -19,17 +21,87 @@ jobs:
             snyk auth ${{ secrets.SNYK_TOKEN }}
             snyk test
 
-  # Sonarcloud-Code-Scan:
-  #   name: SonarCloud scan
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+  Sonarcloud-Code-Scan:
+    name: SonarCloud scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  #     - name: SonarCloud Scan
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  SpectralOps-Vulnerability-Scan:
+    name: Spectral Code Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Install and run Spectral CI
+        uses: spectralops/spectral-github-action@v4
+        with:
+          spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
+          spectral-args: scan --ok
+
+  Bandit-SAST-Checker:
+    name: Bandit Vulnerability Checker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bandit Scan
+        uses: jpetrucciani/bandit-check@main
+        with:
+          path: '.'
+
+  Git-Leaks-Scan:
+    name: Git leaks scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  Bearer-Code-Scan:
+    name: Bearer Code Scanner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bearer code scan
+        uses: bearer/bearer-action@v2
+
+
+  Semgrep-Code-Scan:
+    name: Semgrep Code Scanner
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: full scan
+        run: |
+          semgrep \
+            --sarif --output report.sarif \
+            --metrics=off \
+            --config="p/default"
