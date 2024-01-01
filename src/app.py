@@ -52,7 +52,7 @@ class Game:
     deck = []
 
     def __init__(self, number_of_players, dealing_direction,
-    dealing_instructions):
+                 dealing_instructions):
         self.number_of_players = number_of_players
         self.dealing_direction = dealing_direction
         self.dealing_instructions = dealing_instructions
