@@ -1,5 +1,4 @@
 import unittest
-import pyspelling
 
 from src.app import Card, Deck, Player, Game, Belot, Poker
 
@@ -65,4 +64,4 @@ class TestPoker(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(argv=['first-arg-is-ignored'], exit=False)
+    unittest.main()
