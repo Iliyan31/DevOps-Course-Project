@@ -38,7 +38,7 @@ jobs:
           authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
           apiUrl: ${{ secrets.CONTRAST_API_URL }}
           filePath: -f requirements.txt
-          severity: medium
+          severity: high
           fail: true
 
 
