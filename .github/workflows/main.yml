@@ -120,14 +120,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build docker image
-        run: docker build -t devops-course-project ./src
-
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner in fs mode
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/devops-course-project'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          scan-type: 'fs'
+          scan-ref: '.'
+          trivy-config: trivy.yaml
