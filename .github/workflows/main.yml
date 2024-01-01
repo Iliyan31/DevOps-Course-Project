@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Run snyk scan
-        working-directory: DevOps-Course-Project/src
+        working-directory: ${{github.workspace}}/src
         run: |
             npm install snyk -g
             snyk auth ${{ secrets.SNYK_TOKEN }}
