@@ -51,3 +51,16 @@ jobs:
 
       - name: Check link in markdown files
         uses: gaurav-nelson/github-action-markdown-link-check@v1
+
+
+      Check-Editorconfig:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Run editorconfig-checker
+          uses: editorconfig-checker/action-editorconfig-checker@main
+
+        - name: Run editorconfig-checker
+          run: editorconfig-checker
