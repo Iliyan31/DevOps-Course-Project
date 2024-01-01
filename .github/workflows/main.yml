@@ -68,5 +68,5 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Bearer
+      - name: Bearer code scan
         uses: bearer/bearer-action@v2
