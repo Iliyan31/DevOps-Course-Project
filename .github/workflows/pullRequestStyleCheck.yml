@@ -1,0 +1,18 @@
+name: DevOps Course Project workflow for checking style of pull requests
+on: [pull_request]
+
+jobs:
+
+  Pull-Request-Style-Check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check branch name and commit messages style
+      uses: maximbircu/pull-request-checkstyle@v1.0.0
+      with:
+        commit-message-title-regex: ".*"
+        commit-message-title-min-length: 10
+        commit-message-title-max-length: 70
+
+        branch-name-regex: ".*"
+        branch-name-min-length: 10
+        branch-name-max-length: 70
