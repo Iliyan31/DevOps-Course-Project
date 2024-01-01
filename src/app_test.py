@@ -64,4 +64,4 @@ class TestPoker(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(__name__, argv=['main'], exit=False)
+    unittest.main(argv=['first-arg-is-ignored'], exit=False)
