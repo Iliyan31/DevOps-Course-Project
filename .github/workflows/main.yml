@@ -91,48 +91,72 @@ jobs:
           source_files: '**/*.md'
           task_name: Markdown
 
-
-    Build-And-Trivy-Scan:
+    Build-And-Publish-Docker-Image:
+      name: Publish the docker image
       runs-on: ubuntu-latest
+      needs: Trivy-Scan-And-Build
       steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
 
-      - name: Build the Docker image
-        run: docker build -t devopscourseproject src/
+        - name: Login to DockerHub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Scan built Docker image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+        - name: Build docker image
+          run: docker build -t devopscourseproject ./src
 
-    Publish:
-      runs-on: ubuntu-latest
-      steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+        - name: Add tag to docker image
+          run: docker tag devopscourseproject ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
 
-      - name: Build the Docker image
-        run: docker build -t devopscourseproject src/
+        - name: Publish to DockerHub
+          run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+    # Build-And-Trivy-Scan:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v3
 
-      - name: Add tag to the Docker image
-        run: docker tag devopscourseproject ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
+    #   - name: Build the Docker image
+    #     run: docker build -t devopscourseproject src/
 
-      - name: Publish the Docker image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
+    #   - name: Scan built Docker image with Trivy
+    #     uses: aquasecurity/trivy-action@master
+    #     with:
+    #       image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject'
+    #       exit-code: '1'
+    #       ignore-unfixed: true
+    #       vuln-type: 'os,library'
+    #       format: 'template'
+    #       template: '@/contrib/sarif.tpl'
+    #       output: 'trivy-results.sarif'
+    #       severity: 'CRITICAL,HIGH'
+
+    # Publish:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v3
+
+    #   - name: Build the Docker image
+    #     run: docker build -t devopscourseproject src/
+
+    #   - name: Login to DockerHub
+    #     uses: docker/login-action@v3
+    #     with:
+    #       username: ${{ secrets.DOCKERHUB_USERNAME }}
+    #       password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    #   - name: Add tag to the Docker image
+    #     run: docker tag devopscourseproject ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
+
+    #   - name: Publish the Docker image
+    #     run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
 
 
     # Build-And-Publish-Docker-Image:
