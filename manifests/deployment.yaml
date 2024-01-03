@@ -6,7 +6,7 @@ spec:
     selector:
         matchLabels:
             app: DevOps_Course_Project
-    replicas: 2
+    replicas: 3
     template:
         metadata:
             labels:
@@ -15,12 +15,5 @@ spec:
             containers:
                 - name: devopscourseproject-api
                   image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
-                  resources:
-                      limits:
-                          cpu: 50m
-                          memory: 100Mi
-                      requests:
-                          cpu: 25m
-                          memory: 10Mi
                   ports:
                       - containerPort: 5000
