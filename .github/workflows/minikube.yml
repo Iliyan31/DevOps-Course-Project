@@ -32,7 +32,7 @@ jobs:
           run: kubectl apply -f deploy-to-minikube.yaml
 
         - name: Rollout status
-          run: kubectl rollout status deployment/devopscourseproject
+          run: kubectl rollout status deployment
 
         - name: Test service URLs
           run: |
