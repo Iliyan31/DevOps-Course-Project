@@ -13,7 +13,7 @@ spec:
                 app: devopscourseproject
         spec:
             containers:
-                - name: devopscourseprojecte-api
+                - name: devopscourseproject-api
                   image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
                   resources:
                       limits:
