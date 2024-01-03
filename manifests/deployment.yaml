@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: devopscourseproject
+spec:
+    selector:
+        matchLabels:
+            app: devopscourseproject
+    replicas: 2
+    template:
+        metadata:
+            labels:
+                app: devopscourseproject
+        spec:
+            containers:
+                - name: devopscourseprojecte-api
+                  image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
+                  resources:
+                      limits:
+                          cpu: 50m
+                          memory: 100Mi
+                      requests:
+                          cpu: 25m
+                          memory: 10Mi
+                  ports:
+                      - containerPort: 8080

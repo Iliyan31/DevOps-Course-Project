@@ -29,7 +29,7 @@ jobs:
           run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
 
         - name: Deploy to minikube
-          run: kubectl apply -f deploy-to-minikube.yaml
+          run: kubectl apply -f manifests/
 
         - name: Rollout status
           run: kubectl rollout status deployment
