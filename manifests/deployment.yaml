@@ -23,4 +23,4 @@ spec:
                           cpu: 25m
                           memory: 10Mi
                   ports:
-                      - containerPort: 8080
+                      - containerPort: 5000
