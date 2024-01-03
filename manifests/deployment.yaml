@@ -5,12 +5,12 @@ metadata:
 spec:
     selector:
         matchLabels:
-            app: devopscourseproject
+            app: DevOps_Course_Project
     replicas: 2
     template:
         metadata:
             labels:
-                app: devopscourseproject
+                app: DevOps_Course_Project
         spec:
             containers:
                 - name: devopscourseproject-api
