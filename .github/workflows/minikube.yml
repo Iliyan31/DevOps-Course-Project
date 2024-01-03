@@ -32,7 +32,7 @@ jobs:
           run: kubectl apply -f manifests/
 
         - name: Rollout status
-          run: kubectl rollout status deployment.apps/funeral-agency-deployment --timeout=60s
+          run: kubectl rollout status deployment.apps/devopscourseproject --timeout=60s
 
         - name: Test service URLs
           run: |
