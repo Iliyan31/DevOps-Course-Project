@@ -14,7 +14,6 @@ spec:
         spec:
             containers:
                 - name: devopscourseprojecte-api
-                  imagePullPolicy: Never
                   image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
                   resources:
                       limits:
