@@ -32,7 +32,7 @@ jobs:
           run: kubectl apply -f manifests/
 
         - name: Get Data
-          run: kubectl config get-context
+          run: kubectl config get-contexts
 
         - name: Rollout status
           run: kubectl rollout status deployment --timeout=60s
