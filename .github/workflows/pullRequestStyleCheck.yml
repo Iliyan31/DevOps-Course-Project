@@ -18,3 +18,4 @@ jobs:
         branch-name-regex: ".*"
         branch-name-min-length: 10
         branch-name-max-length: 70
+
