@@ -33,7 +33,7 @@ metadata:
 spec:
     type: NodePort
     selector:
-        app: devopscourseproject
+        app: devopscourseprojecte-api
     ports:
         - port: 8080
           targetPort: 8080
