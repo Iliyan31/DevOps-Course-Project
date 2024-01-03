@@ -15,7 +15,7 @@ spec:
             containers:
                 - name: devopscourseprojecte-api
                   imagePullPolicy: Never
-                  image: local/devopscourseproject:latest
+                  image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
                   resources:
                       limits:
                           cpu: 50m
