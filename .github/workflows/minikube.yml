@@ -31,11 +31,8 @@ jobs:
         - name: Deploy to minikube
           run: kubectl apply -f manifests/
 
-        - name: Get Data
-          run: kubectl config get-contexts
-
         - name: Rollout status
-          run: kubectl rollout status deployment --timeout=60s
+          run: kubectl rollout status deployment/devopscourseproject --timeout=60s
 
         - name: Test service URLs
           run: |
