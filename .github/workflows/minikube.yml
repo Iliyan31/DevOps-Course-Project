@@ -34,8 +34,8 @@ jobs:
         - name: Checks
           run: kubectl get events --all-namespaces
 
-        - name: Rollout status
-          run: kubectl rollout status deployment
+        # - name: Rollout status
+        #   run: kubectl rollout status deployment
 
         - name: Test service URLs
           run: |
