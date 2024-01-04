@@ -37,8 +37,11 @@ jobs:
         - name: Checks
           run: kubectl get events --all-namespaces
 
-        - name: Get pods data
+        - name: Get pods statuses
           run: kubectl get pods -n devopscourseproject-api
+
+        - name: Get Pods data
+          run: kubectl get events --sort-by=.metadata.creationTimestamp
 
         - name: Rollout status
           run: kubectl rollout status deployment/devopscourseproject -n devopscourseproject-api
