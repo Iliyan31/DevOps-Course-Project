@@ -38,7 +38,7 @@ jobs:
           run: kubectl get events --all-namespaces
 
         - name: Rollout status
-          run: kubectl rollout status deployment
+          run: kubectl rollout status deployment/devopscourseproject -n devopscourseproject-api
 
         - name: Test service URLs
           run: |
