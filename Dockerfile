@@ -15,4 +15,3 @@ EXPOSE 5000
 
 # Run the application
 CMD ["python3", "/usr/src/app/app.py"]
-
