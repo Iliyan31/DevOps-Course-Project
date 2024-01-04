@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Pod
 metadata:
     name: devopscourseproject
 spec:
@@ -14,6 +14,6 @@ spec:
         spec:
             containers:
                 - name: devopscourseproject-api
-                  image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
+                  image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject:latest
                   ports:
                       - containerPort: 5000
