@@ -1,6 +1,6 @@
 name: DevOps Course Project workflow for deployment to Minikube
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
 
