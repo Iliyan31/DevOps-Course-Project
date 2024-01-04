@@ -32,9 +32,6 @@ jobs:
         - name: Deploy to minikube
           run: kubectl apply -f manifests/
 
-        - name: Checks
-          run: kubectl get events --all-namespaces
-
         - name: Get pods statuses
           run: kubectl get pods
           
