@@ -14,6 +14,6 @@ spec:
         spec:
             containers:
                 - name: devopscourseproject
-                  image: iliyan31/devopscourseproject:latest
+                  image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
                   ports:
                       - containerPort: 5000
