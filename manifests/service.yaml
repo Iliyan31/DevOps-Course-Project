@@ -5,7 +5,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-      app: DevOps-Course-Project
+      app: devopscourseproject
   ports:
   - protocol: TCP
     port: 5000
