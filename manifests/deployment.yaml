@@ -14,6 +14,6 @@ spec:
         spec:
             containers:
                 - name: devopscourseproject-api
-                  image: devopscourseproject
+                  image: devopscourseproject:latest
                   ports:
                       - containerPort: 5000
