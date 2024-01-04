@@ -28,6 +28,9 @@ jobs:
         - name: Pull the Docker image from Docker Hub
           run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
 
+        - name: Create K8s Namespace
+          run: kubectl create ns devopscourseproject-api
+
         - name: Deploy to minikube
           run: kubectl apply -f manifests/ -n devopscourseproject-api
 
