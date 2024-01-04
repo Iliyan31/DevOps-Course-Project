@@ -26,13 +26,14 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Pull the Docker image from Docker Hub
-          run: docker pull iliyan31/devopscourseproject
+          run: docker pull iliyan31/devopscourseproject:latest
 
-        - name: Create K8s Namespace
-          run: kubectl create ns devopscourseprojectns
+        # - name: Create K8s Namespace
+        #   run: kubectl create ns devopscourseprojectns
 
         - name: Deploy to minikube
-          run: kubectl apply -f manifests/ -n devopscourseprojectns
+          run: kubectl apply -f manifests/
+          # run: kubectl apply -f manifests/ -n devopscourseprojectns
 
         - name: Checks
           run: kubectl get events --all-namespaces
@@ -47,11 +48,12 @@ jobs:
           run: kubectl get events --sort-by=.metadata.creationTimestamp
 
         - name: Rollout status
-          run: kubectl rollout status deployment/devopscourseproject -n devopscourseprojectns
+          run: kubectl rollout status deployment/devopscourseproject_deployment
+          # run: kubectl rollout status deployment/devopscourseproject -n devopscourseprojectns
 
         - name: Test service URLs
           run: |
             minikube service list
-            minikube service devopscourseprojectnode -n devopscourseprojectns --url
+            minikube service devopscourseproject_node --url
             echo "------------------opening the service------------------"
-            curl $(minikube service devopscourseprojectnode -n devopscourseprojectns --url)
+            curl $(minikube service devopscourseproject_node --url)
