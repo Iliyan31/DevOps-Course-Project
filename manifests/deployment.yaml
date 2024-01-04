@@ -5,15 +5,15 @@ metadata:
 spec:
     selector:
         matchLabels:
-            app: DevOps-Course-Project
+            app: devopscourseproject
     replicas: 3
     template:
         metadata:
             labels:
-                app: DevOps-Course-Project
+                app: devopscourseproject
         spec:
             containers:
-                - name: devopscourseproject-api
+                - name: devopscourseproject
                   image: ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject:latest
                   ports:
                       - containerPort: 5000
