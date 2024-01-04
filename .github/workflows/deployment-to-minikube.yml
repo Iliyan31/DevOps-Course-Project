@@ -34,7 +34,7 @@ jobs:
 
         - name: Get pods statuses
           run: kubectl get pods
-          
+
         - name: Describe pods
           run: kubectl describe pods
 
