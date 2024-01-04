@@ -29,29 +29,29 @@ jobs:
           run: docker pull iliyan31/devopscourseproject
 
         - name: Create K8s Namespace
-          run: kubectl create ns devopscourseproject-api
+          run: kubectl create ns devopscourseprojectns
 
         - name: Deploy to minikube
-          run: kubectl apply -f manifests/ -n devopscourseproject-api
+          run: kubectl apply -f manifests/ -n devopscourseprojectns
 
         - name: Checks
           run: kubectl get events --all-namespaces
 
         - name: Get pods statuses
-          run: kubectl get pods -n devopscourseproject-api
+          run: kubectl get pods -n devopscourseprojectns
 
         - name: Describe pods
-          run: kubectl describe pods -n devopscourseproject-api
+          run: kubectl describe pods -n devopscourseprojectns
 
         - name: Get Pods data
           run: kubectl get events --sort-by=.metadata.creationTimestamp
 
         - name: Rollout status
-          run: kubectl rollout status deployment/devopscourseproject -n devopscourseproject-api
+          run: kubectl rollout status deployment/devopscourseproject -n devopscourseprojectns
 
         - name: Test service URLs
           run: |
             minikube service list
-            minikube service devopscourseprojectnode -n devopscourseproject-api --url
+            minikube service devopscourseprojectnode -n devopscourseprojectns --url
             echo "------------------opening the service------------------"
-            curl $(minikube service devopscourseprojectnode -n devopscourseproject-api --url)
+            curl $(minikube service devopscourseprojectnode -n devopscourseprojectns --url)
