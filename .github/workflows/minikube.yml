@@ -38,7 +38,7 @@ jobs:
           run: kubectl get events --all-namespaces
 
         - name: Get pods data
-          run: kubectl get pods
+          run: kubectl get pods -n devopscourseproject-api
 
         - name: Rollout status
           run: kubectl rollout status deployment/devopscourseproject -n devopscourseproject-api
