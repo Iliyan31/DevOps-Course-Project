@@ -43,6 +43,6 @@ jobs:
         - name: Test service URLs
           run: |
             minikube service list
-            minikube service devopscourseproject -n devopscourseproject-api --url
+            minikube service devopscourseprojectnode -n devopscourseproject-api --url
             echo "------------------opening the service------------------"
-            curl $(minikube service devopscourseproject -n devopscourseproject-api --url)
+            curl $(minikube service devopscourseprojectnode -n devopscourseproject-api --url)
