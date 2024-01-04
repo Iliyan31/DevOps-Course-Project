@@ -13,7 +13,7 @@ spec:
         app: devopscourseproject
     spec:
       containers:
-      - name: devopscourseproject_container
+      - name: devopscourseproject-container
         image: iliyan31/devopscourseproject:latest
         ports:
         - containerPort: 5000
