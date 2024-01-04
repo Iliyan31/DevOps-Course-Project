@@ -48,12 +48,12 @@ jobs:
           run: kubectl get events --sort-by=.metadata.creationTimestamp
 
         - name: Rollout status
-          run: kubectl rollout status deployment/devopscourseproject_deployment
+          run: kubectl rollout status deployment/devopscourseproject.deployment
           # run: kubectl rollout status deployment/devopscourseproject -n devopscourseprojectns
 
         - name: Test service URLs
           run: |
             minikube service list
-            minikube service devopscourseproject_node --url
+            minikube service devopscourseproject.node --url
             echo "------------------opening the service------------------"
-            curl $(minikube service devopscourseproject_node --url)
+            curl $(minikube service devopscourseproject.node --url)
