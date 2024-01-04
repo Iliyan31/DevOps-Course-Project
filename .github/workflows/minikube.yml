@@ -41,7 +41,7 @@ jobs:
           run: kubectl get pods -n devopscourseproject-api
 
         - name: Describe pods
-          run: kubectl describe pods
+          run: kubectl describe pods -n devopscourseproject-api
 
         - name: Get Pods data
           run: kubectl get events --sort-by=.metadata.creationTimestamp
