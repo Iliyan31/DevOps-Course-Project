@@ -108,7 +108,7 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Build docker image
-          run: docker build -t devopscourseproject 
+          run: docker build -t devopscourseproject .
 
         - name: Add tag to docker image
           run: docker tag devopscourseproject ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
