@@ -29,28 +29,20 @@ jobs:
         - name: Pull the Docker image from Docker Hub
           run: docker pull iliyan31/devopscourseproject:latest
 
-        # - name: Create K8s Namespace
-        #   run: kubectl create ns devopscourseprojectns
-
         - name: Deploy to minikube
           run: kubectl apply -f manifests/
-          # run: kubectl apply -f manifests/ -n devopscourseprojectns
 
         - name: Checks
           run: kubectl get events --all-namespaces
 
         - name: Get pods statuses
-          run: kubectl get pods -n devopscourseprojectns
-
+          run: kubectl get pods
+          
         - name: Describe pods
-          run: kubectl describe pods -n devopscourseprojectns
-
-        - name: Get Pods data
-          run: kubectl get events --sort-by=.metadata.creationTimestamp
+          run: kubectl describe pods
 
         - name: Rollout status
           run: kubectl rollout status deployment/devopscourseproject-deployment
-          # run: kubectl rollout status deployment/devopscourseproject -n devopscourseprojectns
 
         - name: Test service URLs
           run: |
