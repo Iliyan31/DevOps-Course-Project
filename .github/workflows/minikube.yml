@@ -26,7 +26,7 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Pull the Docker image from Docker Hub
-          run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject:latest
+          run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
 
         - name: Deploy to minikube
           run: kubectl apply -f manifests/
@@ -34,8 +34,8 @@ jobs:
         - name: Checks
           run: kubectl get events --all-namespaces
 
-        # - name: Rollout status
-        #   run: kubectl rollout status deployment
+        - name: Rollout status
+          run: kubectl rollout status deployment
 
         - name: Test service URLs
           run: |
