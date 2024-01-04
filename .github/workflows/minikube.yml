@@ -26,7 +26,7 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Pull the Docker image from Docker Hub
-          run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
+          run: docker pull iliyan31/devopscourseproject
 
         - name: Create K8s Namespace
           run: kubectl create ns devopscourseproject-api
