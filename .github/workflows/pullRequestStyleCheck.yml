@@ -13,9 +13,8 @@ jobs:
       with:
         commit-message-title-regex: ".*"
         commit-message-title-min-length: 10
-        commit-message-title-max-length: 70
+        commit-message-title-max-length: 100
 
         branch-name-regex: ".*"
         branch-name-min-length: 10
-        branch-name-max-length: 70
-
+        branch-name-max-length: 100
