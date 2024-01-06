@@ -7,147 +7,148 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  Snyk-Code-Scan:
-    name: Snyk can for vulnerabilities
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    Snyk-Code-Scan:
+      name: Snyk can for vulnerabilities
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
 
-      - name: Run snyk scan
-        working-directory: ${{github.workspace}}/src
-        run: |
-            npm install snyk -g
-            snyk auth ${{ secrets.SNYK_TOKEN }}
-            snyk test
-
-
-  Check-Dependency-Vulnerabilities:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Contrast SCA Action
-        uses: Contrast-Security-OSS/contrast-sca-action@v1
-        with:
-          apiKey: ${{ secrets.CONTRAST_API_KEY }}
-          orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
-          authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
-          apiUrl: ${{ secrets.CONTRAST_API_URL }}
-          filePath: src/requirements.txt
-          severity: high
-          fail: true
+        - name: Run snyk scan
+          working-directory: ${{github.workspace}}/src
+          run: |
+              npm install snyk -g
+              snyk auth ${{ secrets.SNYK_TOKEN }}
+              snyk test
 
 
-  Sonarcloud-Code-Scan:
-    name: SonarCloud scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    Check-Dependency-Vulnerabilities:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-  SpectralOps-Vulnerability-Scan:
-    name: Spectral Code Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - name: Install and run Spectral CI
-        uses: spectralops/spectral-github-action@v4
-        with:
-          spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
-          spectral-args: scan --ok
+        - name: Contrast SCA Action
+          uses: Contrast-Security-OSS/contrast-sca-action@v1
+          with:
+            apiKey: ${{ secrets.CONTRAST_API_KEY }}
+            orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
+            authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
+            apiUrl: ${{ secrets.CONTRAST_API_URL }}
+            filePath: src/requirements.txt
+            severity: high
+            fail: true
 
 
-  Bandit-SAST-Checker:
-    name: Bandit Vulnerability Checker
-    runs-on: ubuntu-latest
-    steps:
-      - name: Bandit Scan
-        uses: jpetrucciani/bandit-check@main
-        with:
-          path: '.'
+    Sonarcloud-Code-Scan:
+      name: SonarCloud scan
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: SonarCloud Scan
+          uses: SonarSource/sonarcloud-github-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
-  Git-Leaks-Scan:
-    name: Git leaks scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check for gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-  Bearer-Code-Scan:
-    name: Bearer Code Scanner
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Bearer code scan
-        uses: bearer/bearer-action@v2
+    SpectralOps-Vulnerability-Scan:
+      name: Spectral Code Scan
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+        
+        - name: Install and run Spectral CI
+          uses: spectralops/spectral-github-action@v4
+          with:
+            spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
+            spectral-args: scan --ok
 
 
-  Semgrep-Code-Scan:
-    name: Semgrep Code Scanner
-    runs-on: ubuntu-latest
-    container:
-      image: returntocorp/semgrep
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: full scan
-        run: |
-          semgrep \
-            --sarif --output report.sarif \
-            --metrics=off \
-            --config="p/default"
+    Bandit-SAST-Checker:
+      name: Bandit Vulnerability Checker
+      runs-on: ubuntu-latest
+      steps:
+        - name: Bandit Scan
+          uses: jpetrucciani/bandit-check@main
+          with:
+            path: '.'
 
 
-  Trivy-Scan-And-Build:
-    name: Trivy scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    Git-Leaks-Scan:
+      name: Git leaks scan
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
 
-      - name: Run Trivy vulnerability scanner in fs mode
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          trivy-config: trivy.yaml
+        - name: Check for gitleaks
+          uses: gitleaks/gitleaks-action@v2
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    Bearer-Code-Scan:
+      name: Bearer Code Scanner
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Bearer code scan
+          uses: bearer/bearer-action@v2
+
+
+    Semgrep-Code-Scan:
+      name: Semgrep Code Scanner
+      runs-on: ubuntu-latest
+      container:
+        image: returntocorp/semgrep
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: full scan
+          run: |
+            semgrep \
+              --sarif --output report.sarif \
+              --metrics=off \
+              --config="p/default"
+
+
+    Trivy-Scan-And-Build:
+      name: Trivy scan
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Run Trivy vulnerability scanner in fs mode
+          uses: aquasecurity/trivy-action@master
+          with:
+            scan-type: 'fs'
+            scan-ref: '.'
+            trivy-config: trivy.yaml
+
 
     Check-Style-Lint-flake8:
       runs-on: ubuntu-latest
