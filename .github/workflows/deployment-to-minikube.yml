@@ -1,0 +1,49 @@
+name: DevOps Course Project workflow for deployment to Minikube
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+
+    Deployment-to-Minkube:
+      runs-on: ubuntu-latest
+      name: build example and deploy to minikube
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Start Minikube
+          uses: medyagh/setup-minikube@master
+
+        - name: Try the cluster
+          run: kubectl get pods -A
+
+        - name: Login to Docker Hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+        - name: Pull the Docker image from Docker Hub
+          run: docker pull iliyan31/devopscourseproject:latest
+
+        - name: Deploy to minikube
+          run: kubectl apply -f manifests/
+
+        - name: Get pods statuses
+          run: kubectl get pods
+
+        - name: Describe pods
+          run: kubectl describe pods
+
+        - name: Rollout status
+          run: kubectl rollout status deployment/devopscourseproject-deployment
+
+        - name: Test service URLs
+          run: |
+            minikube service list
+            minikube service devopscourseproject-node --url
+            echo "------------------opening the service------------------"
+            curl $(minikube service devopscourseproject-node --url)
