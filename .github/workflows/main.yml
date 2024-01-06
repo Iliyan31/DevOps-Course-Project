@@ -97,7 +97,7 @@ jobs:
       steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Install dependencies
         run: pip3 install -r src/requirements.txt
 
