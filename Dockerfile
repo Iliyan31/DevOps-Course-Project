@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip python3-dev build-e
 
 # Install dependencies
 COPY ./src/requirements.txt /usr/src/app/
-RUN pip3 install --no-cache-dir -r /usr/src/app/requirements.txt
+RUN pip3 install --no-cache-dir -r Flask==2.3.2
 
 # Copy files required for the app to run
 COPY ./src/app.py /usr/src/app/
