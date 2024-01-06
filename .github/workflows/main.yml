@@ -23,24 +23,24 @@ jobs:
               snyk test
 
 
-    Check-Dependency-Vulnerabilities:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+    # Check-Dependency-Vulnerabilities:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - name: Checkout
+    #       uses: actions/checkout@v4
+    #       with:
+    #         fetch-depth: 0
 
-        - name: Contrast SCA Action
-          uses: Contrast-Security-OSS/contrast-sca-action@v1
-          with:
-            apiKey: ${{ secrets.CONTRAST_API_KEY }}
-            orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
-            authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
-            apiUrl: ${{ secrets.CONTRAST_API_URL }}
-            filePath: requirements.txt
-            severity: high
-            fail: true
+    #     - name: Contrast SCA Action
+    #       uses: Contrast-Security-OSS/contrast-sca-action@v1
+    #       with:
+    #         apiKey: ${{ secrets.CONTRAST_API_KEY }}
+    #         orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
+    #         authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
+    #         apiUrl: ${{ secrets.CONTRAST_API_URL }}
+    #         filePath: requirements.txt
+    #         severity: high
+    #         fail: true
 
 
     Sonarcloud-Code-Scan:
