@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip python3-dev build-e
 
 # Install dependencies
 COPY src/requirements.txt /usr/src/app/
+RUN cat /usr/src/app/requirements.txt
 RUN pip3 install --no-cache-dir -r /usr/src/app/requirements.txt
 
 # Copy files required for the app to run
