@@ -7,149 +7,8 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-    Snyk-Code-Scan:
-      name: Snyk can for vulnerabilities
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
-
-        - name: Run snyk scan
-          working-directory: ${{github.workspace}}/src
-          run: |
-              pip3 install -r requirements.txt
-              npm install snyk -g
-              snyk auth ${{ secrets.SNYK_TOKEN }}
-              snyk test
-
-
-    # Check-Dependency-Vulnerabilities:
-    #   runs-on: ubuntu-latest
-    #   steps:
-    #     - name: Checkout
-    #       uses: actions/checkout@v4
-    #       with:
-    #         fetch-depth: 0
-
-    #     - name: Contrast SCA Action
-    #       uses: Contrast-Security-OSS/contrast-sca-action@v1
-    #       with:
-    #         apiKey: ${{ secrets.CONTRAST_API_KEY }}
-    #         orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
-    #         authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
-    #         apiUrl: ${{ secrets.CONTRAST_API_URL }}
-    #         filePath: requirements.txt
-    #         severity: high
-    #         fail: true
-
-
-    Sonarcloud-Code-Scan:
-      name: SonarCloud scan
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: SonarCloud Scan
-          uses: SonarSource/sonarcloud-github-action@master
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-    SpectralOps-Vulnerability-Scan:
-      name: Spectral Code Scan
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: Install and run Spectral CI
-          uses: spectralops/spectral-github-action@v4
-          with:
-            spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
-            spectral-args: scan --ok
-
-
-    Bandit-SAST-Checker:
-      name: Bandit Vulnerability Checker
-      runs-on: ubuntu-latest
-      steps:
-        - name: Bandit Scan
-          uses: jpetrucciani/bandit-check@main
-          with:
-            path: '.'
-
-
-    Git-Leaks-Scan:
-      name: Git leaks scan
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: Check for gitleaks
-          uses: gitleaks/gitleaks-action@v2
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-    Bearer-Code-Scan:
-      name: Bearer Code Scanner
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: Bearer code scan
-          uses: bearer/bearer-action@v2
-
-
-    Semgrep-Code-Scan:
-      name: Semgrep Code Scanner
-      runs-on: ubuntu-latest
-      container:
-        image: returntocorp/semgrep
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: full scan
-          run: |
-            semgrep \
-              --sarif --output report.sarif \
-              --metrics=off \
-              --config="p/default"
-
-
-    Trivy-Scan-And-Build:
-      name: Trivy scan
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: Run Trivy vulnerability scanner in fs mode
-          uses: aquasecurity/trivy-action@master
-          with:
-            scan-type: 'fs'
-            scan-ref: '.'
-            trivy-config: trivy.yaml
-
-
     Check-Style-Lint-flake8:
+      name: Lint flake8 check style
       runs-on: ubuntu-latest
       steps:
         - name: Setup Python
@@ -173,6 +32,7 @@ jobs:
 
 
     Check-Makrdown-Files:
+      name: Check markdown files style
       runs-on: ubuntu-latest
       steps:
       - name: Checkout
@@ -187,6 +47,7 @@ jobs:
 
 
     Check-Links-In-Markdown-Files:
+      name: Check links in markdown files
       runs-on: ubuntu-latest
       steps:
       - name: Checkout
@@ -197,6 +58,7 @@ jobs:
 
 
     Check-Editorconfig:
+      name: Check editorconfig
       runs-on: ubuntu-latest
       steps:
       - name: Checkout
@@ -210,6 +72,7 @@ jobs:
 
 
     Check-Python-Style:
+      name: Check python files style
       runs-on: ubuntu-latest
       steps:
       - name: Checkout
@@ -220,9 +83,9 @@ jobs:
 
 
     Spellcheck:
+      name: Check spelling
       runs-on: ubuntu-latest
       steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -234,7 +97,9 @@ jobs:
 
 
     Run-Unit-Tests:
+      name: Run unit tests
       runs-on: ubuntu-latest
+      need: [Check-Style-Lint-flake8,Check-Makrdown-Files,Check-Links-In-Markdown-Files,Check-Editorconfig,Check-Python-Style,Spellcheck]
       steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -246,9 +111,192 @@ jobs:
         run: python3 -m unittest src/app_test.py
 
 
+    Database-Migrations:
+      name: Database migrations check
+      runs-on: ubuntu-latest
+      need: [Check-Style-Lint-flake8,Check-Makrdown-Files,Check-Links-In-Markdown-Files,Check-Editorconfig,Check-Python-Style,Spellcheck]
+      services:
+        postgres:
+          image: postgres
+          env:
+            POSTGRES_DB: db
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Flyway migration
+          uses: joshuaavalon/flyway-action@v3.0.0
+          with:
+            url: jdbc:postgresql://postgres:5432/db
+            user: user
+            password: password
+
+        - name: Print completed
+          run: echo 'Completed'
+
+
+    Snyk-Code-Scan:
+      name: Snyk can for vulnerabilities
+      runs-on: ubuntu-latest
+      need: [Run-Unit-Tests,Database-Migrations]
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Run snyk scan
+          working-directory: ${{github.workspace}}/src
+          run: |
+              pip3 install -r requirements.txt
+              npm install snyk -g
+              snyk auth ${{ secrets.SNYK_TOKEN }}
+              snyk test
+
+
+    # Check-Dependency-Vulnerabilities:
+    #   runs-on: ubuntu-latest
+    #   need: [Run-Unit-Tests,Database-Migrations]
+    #   steps:
+    #     - name: Checkout
+    #       uses: actions/checkout@v4
+    #       with:
+    #         fetch-depth: 0
+
+    #     - name: Contrast SCA Action
+    #       uses: Contrast-Security-OSS/contrast-sca-action@v1
+    #       with:
+    #         apiKey: ${{ secrets.CONTRAST_API_KEY }}
+    #         orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
+    #         authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
+    #         apiUrl: ${{ secrets.CONTRAST_API_URL }}
+    #         filePath: requirements.txt
+    #         severity: high
+    #         fail: true
+
+
+    Sonarcloud-Code-Scan:
+      name: SonarCloud scan
+      runs-on: ubuntu-latest
+      need: [Run-Unit-Tests,Database-Migrations]
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: SonarCloud Scan
+          uses: SonarSource/sonarcloud-github-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
+    SpectralOps-Vulnerability-Scan:
+      name: Spectral Code Scan
+      runs-on: ubuntu-latest
+      need: [Run-Unit-Tests,Database-Migrations]
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Install and run Spectral CI
+          uses: spectralops/spectral-github-action@v4
+          with:
+            spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
+            spectral-args: scan --ok
+
+
+    Bandit-SAST-Checker:
+      name: Bandit Vulnerability Checker
+      runs-on: ubuntu-latest
+      need: [Run-Unit-Tests,Database-Migrations]
+      steps:
+        - name: Bandit Scan
+          uses: jpetrucciani/bandit-check@main
+          with:
+            path: '.'
+
+
+    Git-Leaks-Scan:
+      name: Git leaks scan
+      runs-on: ubuntu-latest
+      need: [Run-Unit-Tests,Database-Migrations]
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Check for gitleaks
+          uses: gitleaks/gitleaks-action@v2
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    Bearer-Code-Scan:
+      name: Bearer Code Scanner
+      runs-on: ubuntu-latest
+      need: [Run-Unit-Tests,Database-Migrations]
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Bearer code scan
+          uses: bearer/bearer-action@v2
+
+
+    Semgrep-Code-Scan:
+      name: Semgrep Code Scanner
+      runs-on: ubuntu-latest
+      need: [Run-Unit-Tests,Database-Migrations]
+      container:
+        image: returntocorp/semgrep
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: full scan
+          run: |
+            semgrep \
+              --sarif --output report.sarif \
+              --metrics=off \
+              --config="p/default"
+
+
+    Trivy-Scan-And-Build:
+      name: Trivy scan
+      runs-on: ubuntu-latest
+      need: [Snyk-Code-Scan,Sonarcloud-Code-Scan,SpectralOps-Vulnerability-Scan,Bandit-SAST-Checker,Git-Leaks-Scan,Bearer-Code-Scan,Semgrep-Code-Scan]
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Run Trivy vulnerability scanner in fs mode
+          uses: aquasecurity/trivy-action@master
+          with:
+            scan-type: 'fs'
+            scan-ref: '.'
+            trivy-config: trivy.yaml
+
+
     Build-And-Publish-Docker-Image:
       name: Publish the docker image
       runs-on: ubuntu-latest
+      need: [Trivy-Scan-And-Build]
       steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -310,32 +358,3 @@ jobs:
     #         push: true
     #         tags: ${{ steps.metadata.outputs.tags }}
     #         labels: ${{ steps.metadata.outputs.labels }}
-
-    Database-Migrations:
-      name: Database migrations check
-      runs-on: ubuntu-latest
-      services:
-        postgres:
-          image: postgres
-          env:
-            POSTGRES_DB: db
-            POSTGRES_USER: user
-            POSTGRES_PASSWORD: password
-          options: >-
-            --health-cmd pg_isready
-            --health-interval 10s
-            --health-timeout 5s
-            --health-retries 5
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-
-        - name: Flyway migration
-          uses: joshuaavalon/flyway-action@v3.0.0
-          with:
-            url: jdbc:postgresql://postgres:5432/db
-            user: user
-            password: password
-
-        - name: Print completed
-          run: echo 'Completed'
