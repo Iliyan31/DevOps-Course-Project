@@ -14,8 +14,6 @@ We use github to host code, to track issues and feature requests, as well as acc
 In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Use a Consistent Coding Style
-I'm again borrowing these from [Facebook's Guidelines](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)
-
 * 2 spaces for indentation rather than tabs
 * You can try running `npm run lint` for style unification
 
