@@ -98,6 +98,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: pip3 install -r src/requirements.txt
+
       - name: Run unit tests
         run: python3 -m unittest src/app_test.py
 
@@ -118,7 +121,7 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Build docker image
-          run: docker build -t devopscourseproject .
+          run: docker build -t devopscourseproject src/
 
         - name: Add tag to docker image
           run: docker tag devopscourseproject ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject
