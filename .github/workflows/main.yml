@@ -99,7 +99,7 @@ jobs:
     Run-Unit-Tests:
       name: Run unit tests
       runs-on: ubuntu-latest
-      need: [Check-Style-Lint-flake8,Check-Makrdown-Files,Check-Links-In-Markdown-Files,Check-Editorconfig,Check-Python-Style,Spellcheck]
+      needs: [Check-Style-Lint-flake8,Check-Makrdown-Files,Check-Links-In-Markdown-Files,Check-Editorconfig,Check-Python-Style,Spellcheck]
       steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -114,7 +114,7 @@ jobs:
     Database-Migrations:
       name: Database migrations check
       runs-on: ubuntu-latest
-      need: [Check-Style-Lint-flake8,Check-Makrdown-Files,Check-Links-In-Markdown-Files,Check-Editorconfig,Check-Python-Style,Spellcheck]
+      needs: [Check-Style-Lint-flake8,Check-Makrdown-Files,Check-Links-In-Markdown-Files,Check-Editorconfig,Check-Python-Style,Spellcheck]
       services:
         postgres:
           image: postgres
@@ -145,7 +145,7 @@ jobs:
     Snyk-Code-Scan:
       name: Snyk can for vulnerabilities
       runs-on: ubuntu-latest
-      need: [Run-Unit-Tests,Database-Migrations]
+      needs: [Run-Unit-Tests,Database-Migrations]
       steps:
         - name: Checkout code
           uses: actions/checkout@v3
@@ -161,7 +161,7 @@ jobs:
 
     # Check-Dependency-Vulnerabilities:
     #   runs-on: ubuntu-latest
-    #   need: [Run-Unit-Tests,Database-Migrations]
+    #   needs: [Run-Unit-Tests,Database-Migrations]
     #   steps:
     #     - name: Checkout
     #       uses: actions/checkout@v4
@@ -183,7 +183,7 @@ jobs:
     Sonarcloud-Code-Scan:
       name: SonarCloud scan
       runs-on: ubuntu-latest
-      need: [Run-Unit-Tests,Database-Migrations]
+      needs: [Run-Unit-Tests,Database-Migrations]
       steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -200,7 +200,7 @@ jobs:
     SpectralOps-Vulnerability-Scan:
       name: Spectral Code Scan
       runs-on: ubuntu-latest
-      need: [Run-Unit-Tests,Database-Migrations]
+      needs: [Run-Unit-Tests,Database-Migrations]
       steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -217,7 +217,7 @@ jobs:
     Bandit-SAST-Checker:
       name: Bandit Vulnerability Checker
       runs-on: ubuntu-latest
-      need: [Run-Unit-Tests,Database-Migrations]
+      needs: [Run-Unit-Tests,Database-Migrations]
       steps:
         - name: Bandit Scan
           uses: jpetrucciani/bandit-check@main
@@ -228,7 +228,7 @@ jobs:
     Git-Leaks-Scan:
       name: Git leaks scan
       runs-on: ubuntu-latest
-      need: [Run-Unit-Tests,Database-Migrations]
+      needs: [Run-Unit-Tests,Database-Migrations]
       steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -244,7 +244,7 @@ jobs:
     Bearer-Code-Scan:
       name: Bearer Code Scanner
       runs-on: ubuntu-latest
-      need: [Run-Unit-Tests,Database-Migrations]
+      needs: [Run-Unit-Tests,Database-Migrations]
       steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -258,7 +258,7 @@ jobs:
     Semgrep-Code-Scan:
       name: Semgrep Code Scanner
       runs-on: ubuntu-latest
-      need: [Run-Unit-Tests,Database-Migrations]
+      needs: [Run-Unit-Tests,Database-Migrations]
       container:
         image: returntocorp/semgrep
       steps:
@@ -278,7 +278,7 @@ jobs:
     Trivy-Scan-And-Build:
       name: Trivy scan
       runs-on: ubuntu-latest
-      need: [Snyk-Code-Scan,Sonarcloud-Code-Scan,SpectralOps-Vulnerability-Scan,Bandit-SAST-Checker,Git-Leaks-Scan,Bearer-Code-Scan,Semgrep-Code-Scan]
+      needs: [Snyk-Code-Scan,Sonarcloud-Code-Scan,SpectralOps-Vulnerability-Scan,Bandit-SAST-Checker,Git-Leaks-Scan,Bearer-Code-Scan,Semgrep-Code-Scan]
       steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -296,7 +296,7 @@ jobs:
     Build-And-Publish-Docker-Image:
       name: Publish the docker image
       runs-on: ubuntu-latest
-      need: [Trivy-Scan-And-Build]
+      needs: [Trivy-Scan-And-Build]
       steps:
         - name: Checkout
           uses: actions/checkout@v4
