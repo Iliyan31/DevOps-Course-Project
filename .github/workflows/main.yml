@@ -166,8 +166,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
 
         - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@master
@@ -183,8 +181,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
 
         - name: Install and run Spectral CI
           uses: spectralops/spectral-github-action@v4
@@ -211,8 +207,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
 
         - name: Check for gitleaks
           uses: gitleaks/gitleaks-action@v2
@@ -227,8 +221,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
 
         - name: Bearer code scan
           uses: bearer/bearer-action@v2
@@ -243,8 +235,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
 
         - name: full scan
           run: |
@@ -261,8 +251,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
 
         - name: Run Trivy vulnerability scanner in fs mode
           uses: aquasecurity/trivy-action@master
@@ -279,8 +267,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
 
         - name: Login to DockerHub
           uses: docker/login-action@v3
