@@ -48,7 +48,7 @@ The following style checks are run on the code and the other files in the reposi
 - **Database migrations check** - The job uses the postgres Docker image to create a PostgreSQL database container. Then it runs multiple health checks on it. If they are successful, Flyway is run to migrate a databse with the provided in the repository sql filles.
 
 ### Security Checks and Scans:
-- **Snyk scan for vulnerabilities** -  The project’s dependencies are checked for vulnerabilities. They are located in src/requirement.txt.
+- **Snyk scan for vulnerabilities** -  The project’s [dependencies](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/src/requirements.txt) are checked for vulnerabilities.
 - **SonarCloud scan** - The job scans the software code with SonarCloud to detect bugs, vulnerabilities and code smells. A "code smell" is defined as something in the code that could make it harder to maintain and evolve over time.
 - **Spectral Code Scan** - The job monitors the code for exposed API keys, tokens, credentials, and high-risk security misconfiguration.
 - **Bandit Vulnerability Checker** - The job runs an action for Bandit - an open-source SAST that helps identify security issues in Python code using predefined rules. It is specifically designed to find bugs in Python code that could lead to security vulnerabilities.
