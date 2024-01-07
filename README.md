@@ -1,10 +1,14 @@
 # Course Project for Modern DevOps Practices
 This repository represents the university course project for "Modern DevOps Practices" course made by Iliyan Yordanov and Tsvetelina Chakarova.
 
+The project is distributed under GNU GENERAL PUBLIC LICENSE.
+
 The project represents a complete automated software delivery process with pipelines using the following:
+
 
 ## Source control
 Git is used as version control system for for source control in order to track the running history of changes to the code base, to help resolve conflicts and to make working within a shared codebase easier and more efficient.
+
 
 ## Branching strategies
 Branching strategy is used to organize and manage the code through different GIT branches.
@@ -13,18 +17,22 @@ There is main branch which other branches are merged to when they are ready. Bel
 
 Moreover merching to main happens upon pull request approval.
 
+There is Contributors guide added.s
+
+
 ## Building Pipelines
 Pipelines are build and used for constructing, testing and deploying software code. In this project pipelines include continuous integration and continuous testing. They help for faster, easier and more correct development of the code and better maintenance of the code and it's repository as well.
 
 GitHub Actions is used as a platform for automating pipelines. Workflows are written to be trigered when certain events occur in the repository - commits, pull requests.
 
-## Continuous Integration
+
+## Continuous Integration with Security, Docker, Minikube and Database changes included
 Continuous Integration is software development practice where developers regularly merge their code changes into a central repository, after which automated builds and tests are run.
 It helps for quicker finding of mistakes and improving software quality.
 
 There are several continuous integration pipelines made for the project. They automate the integration of new code changes into the main codebase. 
 
-First there is the main CI workflow - .github\workflows\ci.yml. It's jobs are splitted in stages with the use of the "needs" keyword in order to optimize the running time of the workflow. 
+First there is the **main CI workflow - .github\workflows\ci.yml** which executes on push to any branch. It's jobs are splitted in stages with the use of the "needs" keyword in order to optimize the running time of the workflow. 
 
 ### Style Checks:
 The following style checks are run on the code and the other files in the repository:
@@ -46,9 +54,32 @@ The following style checks are run on the code and the other files in the reposi
 - **Bandit Vulnerability Checker** - The job runs an action for Bandit - an open-source SAST that helps identify security issues in Python code using predefined rules. It is specifically designed to find bugs in Python code that could lead to security vulnerabilities.
 - **Git leaks scan** -  The job runs an action for Gitleaks - a SAST tool for detecting and preventing hardcoded secrets like passwords, API keys, and tokens in the repository.
 - **Bearer Code Scanner** - The job runs an action for Bearer CLI - a SAST tool that scans the source code and analyzes data flows to discover, filter and prioritize security and privace risks.
-- **Semgrep Code Scanner** - The job runs an action forSemgrep - a SAST tool used for identifying and preventing software vulnerabilities. It uses a patternt-oriented matching methodology and looks for specific patterns which may cause problems.
-
+- **Semgrep Code Scanner** - The job runs an action for Semgrep - a SAST tool used for identifying and preventing software vulnerabilities. It uses a patternt-oriented matching methodology and looks for specific patterns which may cause problems.
 
 ### Trivy Scan
+The job runs an action for Trivy - a comprehensive and versatile open-source security scanner. It is used to scan for vulnerabilities in various areas including container images, file systems, git repositories, kubernetes security risks, etc.
+It is recommended to be used for scanning local container image and other artifacts before pushing to a container registry or deploying the application.
 
 ### Build and publish Docker image
+A Docker image is build with the help of the src/Dockerfile. The image is tagged and then uploaded to DockerHub.
+
+Secondly, there is a workflow which executes SonarCloud scan on pull request to the main branch - **.github\workflows\merge-request.yml**.
+
+Next, there is a workflow which executes style checks upon pull request to the main branch - **.github\workflows\pull-request-style-checks.yml**. In more detail - commit messages and branches names are expected to have name length between 10 and 100 characters. This workflow is added in order to enforce meaningful commit messages and branches names.
+
+Last but not least, there is a workflow which checks that deplyment to Minikube is possible- **.github\workflows\ci-for-minikube.yml**. This is done by:
+- starting a Minikube cluster
+- checking that the pods in the cluster are working correclty
+- pulling the Docker image lastly published to DockerHub from the main CI workflow
+- deploying the application to the Minikube cluster with the help of the manifest files.
+- checking that the deployment is successful - stoping the cluster at the end.
+
+
+## Manual deployment to Minikube
+Manual deployment of the Docker image to Minikube is performed in CloudShell. 
+The following commands are run sequentially: \
+* `docker login -u=${{ secrets.DOCKERHUB_USERNAME }} -p=${{ secrets.DOCKERHUB_PASSWORD }}`
+* `docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject:latest`
+* `minikube start`
+* `kubectl apply -f manifests/`
+* `kubectl get pods -A`
