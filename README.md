@@ -44,7 +44,7 @@ The following style checks are run on the code and the other files in the reposi
 - **Check spelling** - This job performs spell checking on Python, Markdown and text files in the repository. It supports multiple languages. Furthermore custom [dictionary](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.spellcheck.yml) is added with words that are valid for the repository. but are not recognised by the action. 
 
 ### Unit tests running and Database migrations check
-- **Run unit tests** - First the dependencies needed for the application src/app.py to run are installed. Then the unit tests in src/app_tests.py are run.
+- **Run unit tests** - First the [dependencies](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/src/requirements.txt) needed for the [application](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/src/app.py) to run are installed. Then the [unit tests](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/src/app_test.py) are run.
 - **Database migrations check** - The job uses the postgres Docker image to create a PostgreSQL database container. Then it runs multiple health checks on it. If they are successful, Flyway is run to migrate a databse with the provided in the repository sql filles.
 
 ### Security Checks and Scans:
@@ -60,8 +60,8 @@ The following style checks are run on the code and the other files in the reposi
 The job runs an action for Trivy - a comprehensive and versatile open-source security scanner. It is used to scan for vulnerabilities in various areas including container images, file systems, git repositories, kubernetes security risks, etc.
 It is recommended to be used for scanning local container image and other artifacts before pushing to a container registry or deploying the application.
 
-### Build and publish Docker image
-A Docker image is build with the help of the src/Dockerfile. The image is tagged and then uploaded to DockerHub.
+### Build and Publish Docker image
+A Docker image is build with the help of the [Dockerfile](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/src/Dockerfile). The image is tagged and then uploaded to DockerHub.
 
 Secondly, there is a **[workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/merge-request.yml)** which executes SonarCloud scan on pull request to the main branch.
 
@@ -77,7 +77,7 @@ Last but not least, there is a **[workflow](https://github.com/Iliyan31/DevOps-C
 
 ## Manual deployment to Minikube
 Manual deployment of the Docker image to Minikube is performed in CloudShell. 
-The following commands are run sequentially: \
+The following commands are run sequentially:
 * `docker login -u=${{ secrets.DOCKERHUB_USERNAME }} -p=${{ secrets.DOCKERHUB_PASSWORD }}`
 * `docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject:latest`
 * `minikube start`
