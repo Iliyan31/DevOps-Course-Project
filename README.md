@@ -1,7 +1,7 @@
 # Course Project for Modern DevOps Practices
 This repository represents the university course project for "Modern DevOps Practices" course made by Iliyan Yordanov and Tsvetelina Chakarova.
 
-The project is distributed under GNU GENERAL PUBLIC LICENSE.
+The project is distributed under [GNU GENERAL PUBLIC LICENSE](https://github.com/Iliyan31/DevOps-Course-Project/blob/documentation/LICENSE).
 
 The project represents a complete automated software delivery process with pipelines using the following:
 
@@ -17,7 +17,7 @@ There is main branch which other branches are merged to when they are ready. Bel
 
 Moreover merching to main happens upon pull request approval.
 
-There is Contributors guide added.s
+There is [Contributors guide](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/CONTRIBUTING.md) added.
 
 
 ## Building Pipelines
@@ -32,7 +32,7 @@ It helps for quicker finding of mistakes and improving software quality.
 
 There are several continuous integration pipelines made for the project. They automate the integration of new code changes into the main codebase. 
 
-First there is the **main CI workflow - .github\workflows\ci.yml** which executes on push to any branch. It's jobs are splitted in stages with the use of the "needs" keyword in order to optimize the running time of the workflow. 
+First there is the **[main CI workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/main.yml)** which executes on push to any branch. It's jobs are splitted in stages with the use of the "needs" keyword in order to optimize the running time of the workflow. 
 
 ### Style Checks:
 The following style checks are run on the code and the other files in the repository:
@@ -41,7 +41,7 @@ The following style checks are run on the code and the other files in the reposi
 - **Check links in markdown files** - The job checks all links in markdown files to see if they are alive or dead.
 - **Editorconfig checker** - The job checks if all files are consistent to the rules specified in .editorconfig. The included .editorconfig file applies the following rules: spaces are used for identation, UTF-8 character set is used, files must end with empty line, there should be no trailing whitespaces, and more.
 - **Check Python files style** - pycodestyle is a tool to check Python code against some of the style conventions in PEP8.
-- **Check spelling** - This job performs spell checking on Python, Markdown and text files in the repository. It supports multiple languages. Furthermore custom dictionary -.spellcheck.yml, is added with words that are valid for the repository. but are not recognised by the action. 
+- **Check spelling** - This job performs spell checking on Python, Markdown and text files in the repository. It supports multiple languages. Furthermore custom [dictionary](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.spellcheck.yml) is added with words that are valid for the repository. but are not recognised by the action. 
 
 ### Unit tests running and Database migrations check
 - **Run unit tests** - First the dependencies needed for the application src/app.py to run are installed. Then the unit tests in src/app_tests.py are run.
@@ -63,15 +63,15 @@ It is recommended to be used for scanning local container image and other artifa
 ### Build and publish Docker image
 A Docker image is build with the help of the src/Dockerfile. The image is tagged and then uploaded to DockerHub.
 
-Secondly, there is a workflow which executes SonarCloud scan on pull request to the main branch - **.github\workflows\merge-request.yml**.
+Secondly, there is a **[workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/merge-request.yml)** which executes SonarCloud scan on pull request to the main branch.
 
-Next, there is a workflow which executes style checks upon pull request to the main branch - **.github\workflows\pull-request-style-checks.yml**. In more detail - commit messages and branches names are expected to have name length between 10 and 100 characters. This workflow is added in order to enforce meaningful commit messages and branches names.
+Next, there is a **[workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/pull-request-style-check.yml)** which executes style checks upon pull request to the main branch. In more detail - commit messages and branches names are expected to have name length between 10 and 100 characters. This workflow is added in order to enforce meaningful commit messages and branches names.
 
-Last but not least, there is a workflow which checks that deplyment to Minikube is possible- **.github\workflows\ci-for-minikube.yml**. This is done by:
+Last but not least, there is a **[workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/deployment-to-minikube.yml)** which checks that deplyment to Minikube is possible. This is done by:
 - starting a Minikube cluster
 - checking that the pods in the cluster are working correclty
 - pulling the Docker image lastly published to DockerHub from the main CI workflow
-- deploying the application to the Minikube cluster with the help of the manifest files.
+- deploying the application to the Minikube cluster with the help of the [manifest files](https://github.com/Iliyan31/DevOps-Course-Project/tree/main/manifests).
 - checking that the deployment is successful - stoping the cluster at the end.
 
 
