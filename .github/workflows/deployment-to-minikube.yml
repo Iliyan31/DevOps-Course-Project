@@ -26,7 +26,7 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Pull the Docker image from Docker Hub
-          run: docker pull iliyan31/devopscourseproject:latest
+          run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devopscourseproject:latest
 
         - name: Deploy to minikube
           run: kubectl apply -f manifests/
