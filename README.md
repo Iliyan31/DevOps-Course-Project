@@ -64,7 +64,7 @@ It is recommended to be used for scanning local container image and other artifa
 #### Build and Publish Docker image
 A Docker image is build with the help of the [Dockerfile](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/src/Dockerfile). The image is tagged and then uploaded to DockerHub.
 
-### **[SonarScan for pull requests workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/merge-request.yml)**
+### **[SonarCloud for pull requests workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/merge-request.yml)**
 This workflow executes SonarCloud scan on pull request to the main branch.
 
 ### **[Style checks for pull requests workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/pull-request-style-check.yml)**
