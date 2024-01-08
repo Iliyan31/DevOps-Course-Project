@@ -2,7 +2,7 @@ import socket
 from flask import Flask
 app = Flask(__name__)
 csrf = CSRFProtect()
-csrf.init_app(app) # Compliant
+csrf.init_app(app)
 message = "Hello! I am a Flask application running on {}"
 
 
