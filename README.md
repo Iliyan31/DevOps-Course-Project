@@ -32,7 +32,7 @@ It helps for quicker finding of mistakes and improving software quality.
 
 There are several continuous integration pipelines made for the project. They automate the integration of new code changes into the main codebase.
 
-### **[Main CI workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/main.yml)**
+### **[Main CI workflow](https://github.com/Iliyan31/DevOps-Course-Project/blob/main/.github/workflows/main-ci.yml)**
 This workflow executes on push to any branch. It's jobs are split in stages with the use of the "needs" keyword in order to optimize the running time of the workflow.
 
 #### Style Checks:
